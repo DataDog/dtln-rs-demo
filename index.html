@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Noise Suppression with dtln-rs</title>
+</head>
+<body>
+    <div>
+        <button id="recordButton">Record</button>
+        <button id="stopButton">Stop Recording</button>
+    </div>
+    <div>
+        Original Audio
+        <audio id="sourceAudioPlayer" controls></audio>
+    </div>
+    <div>
+        Processed Audio
+        <audio id="processedAudioPlayer" controls></audio>
+    </div>
+
+    <script>
+        let audioStream;
+        let mediaRecorder;
+        let audioChunks = [];
+        let micAccess = false;
+
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const audioPlayer = document.getElementById('sourceAudioPlayer');
+        const processedAudioPlayer = document.getElementById('processedAudioPlayer');
+
+        async function startRecording() {
+            try {
+                audioChunks = [];
+                audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(audioStream);
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    sourceAudioPlayer.src = URL.createObjectURL(audioBlob);
+
+                    processAudio(audioBlob);
+                };
+
+                mediaRecorder.start();
+                recordButton.disabled = true;
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                audioStream.getTracks().forEach(track => track.stop());
+                recordButton.disabled = false;
+            }
+        }
+
+        function processAudio(audioBlob) {
+            // invoke imported WASM function here - not sure how it expects bits
+            // const processedAudioBlob = suppressNoise(audioBlob);
+            // processedAudioPlayer.src = URL.createObjectURL(processedAudioBlob);
+            console.log('this is where noise would be removed');
+        }
+
+        recordButton.addEventListener('click', startRecording);
+        stopButton.addEventListener('click',stopRecording);
+    </script>
+</body>
+</html>
