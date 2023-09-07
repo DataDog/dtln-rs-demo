@@ -6,7 +6,7 @@
 <body>
     <div>
         <button id="recordButton">Record</button>
-        <button id="stopButton">Stop Recording</button>
+        <button id="stopButton" disabled>Stop Recording</button>
     </div>
     <div>
         Original Audio
@@ -27,12 +27,28 @@
         const stopButton = document.getElementById('stopButton');
         const audioPlayer = document.getElementById('sourceAudioPlayer');
         const processedAudioPlayer = document.getElementById('processedAudioPlayer');
-
+        
         async function startRecording() {
             try {
+                if (!audioStream) {
+                    // Request microphone permission
+                    await navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function(stream) {
+                        // Permission granted, store the audio stream
+                        audioStream = stream;
+                        
+                        if(!mediaRecorder)
+                            mediaRecorder = new MediaRecorder(audioStream);
+                        
+                        console.log('Microphone access granted');
+                    })
+                    .catch(function(error) {
+                        // Permission denied or other errors
+                        console.error('Microphone access denied:', error);
+                    });
+                }
+                
                 audioChunks = [];
-                audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(audioStream);
 
                 mediaRecorder.ondataavailable = event => {
                     if (event.data.size > 0) {
@@ -49,16 +65,17 @@
 
                 mediaRecorder.start();
                 recordButton.disabled = true;
+                stopButton.disabled = false;
             } catch (error) {
                 console.error('Error accessing microphone:', error);
             }
         }
 
         function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
+            if (mediaRecorder) {
                 mediaRecorder.stop();
-                audioStream.getTracks().forEach(track => track.stop());
                 recordButton.disabled = false;
+                stopButton.disabled = true;
             }
         }
 
