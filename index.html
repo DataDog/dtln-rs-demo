@@ -1,93 +1,197 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-time Noise Suppression with dtln-rs</title>
 </head>
 <body>
-    <div>
-        <button id="recordButton">Record</button>
-        <button id="stopButton" disabled>Stop Recording</button>
-    </div>
-    <div>
-        Original Audio
-        <audio id="sourceAudioPlayer" controls></audio>
-    </div>
-    <div>
-        Processed Audio
-        <audio id="processedAudioPlayer" controls></audio>
-    </div>
-
+    <button onclick="startRecording()">Start Recording</button>
+    <button onclick="stopRecording()">Stop Recording</button>
+    <audio id="rawAudio" controls></audio>
+    <audio id="denoisedAudio" controls></audio>
+    <script src="./dtln.js?v=7"></script>
     <script>
-        let audioStream;
-        let mediaRecorder;
-        let audioChunks = [];
-        let micAccess = false;
 
-        const recordButton = document.getElementById('recordButton');
-        const stopButton = document.getElementById('stopButton');
-        const audioPlayer = document.getElementById('sourceAudioPlayer');
-        const processedAudioPlayer = document.getElementById('processedAudioPlayer');
-        
-        async function startRecording() {
-            try {
-                if (!audioStream) {
-                    // Request microphone permission
-                    await navigator.mediaDevices.getUserMedia({ audio: true })
-                    .then(function(stream) {
-                        // Permission granted, store the audio stream
-                        audioStream = stream;
-                        
-                        if(!mediaRecorder)
-                            mediaRecorder = new MediaRecorder(audioStream);
-                        
-                        console.log('Microphone access granted');
-                    })
-                    .catch(function(error) {
-                        // Permission denied or other errors
-                        console.error('Microphone access denied:', error);
-                    });
-                }
-                
-                audioChunks = [];
+let handle;
+let audioContext;
+let rawChunks;
+let denoisedChunks;
+let scriptProcessor;
+let source;
+let stream;
 
-                mediaRecorder.ondataavailable = event => {
-                    if (event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                };
+const DEFAULT_TARGET_SAMPLE_RATE = 16000;
 
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    sourceAudioPlayer.src = URL.createObjectURL(audioBlob);
+// ScriptProcessorNode is slow and unstable, and trips up with small sample sizes.
+const SCRIPT_PROCESSOR_SAMPLE_SIZE = 4096;
 
-                    processAudio(audioBlob);
-                };
+// DTLN was trained and tuned to work with this specific sample size.
+const DTLN_FIXED_SAMPLE_SIZE = 512;
 
-                mediaRecorder.start();
-                recordButton.disabled = true;
-                stopButton.disabled = false;
-            } catch (error) {
-                console.error('Error accessing microphone:', error);
-            }
+DtlnPlugin.postRun = [function() {
+    console.log('dtln-rs loaded');
+    handle = DtlnPlugin.dtln_create();
+}];
+
+async function startRecording() {
+    rawChunks = [];
+    denoisedChunks = [];
+
+    // Get audio stream from the user's microphone
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    // Create an AudioContext
+    audioContext = new AudioContext({ sampleRate: DEFAULT_TARGET_SAMPLE_RATE });
+
+    // Create a MediaStreamAudioSourceNode from the stream
+    source = audioContext.createMediaStreamSource(stream);
+
+    // Create a ScriptProcessorNode to capture audio data
+    scriptProcessor = audioContext.createScriptProcessor(SCRIPT_PROCESSOR_SAMPLE_SIZE, 1, 1);
+
+    scriptProcessor.onaudioprocess = async function(event) {
+        // Get the input buffer
+        const inputBuffer = event.inputBuffer;
+
+        // Get the PCM data from the input buffer
+        const pcmData = inputBuffer.getChannelData(0);
+
+        // Copy the PCM data to a new Float32Array (copy it)
+        let pcmArray = new Float32Array(pcmData.length);
+        pcmArray.set(pcmData);
+
+        // Store raw PCM data
+        rawChunks.push(pcmArray);
+    };
+
+    // Connect the nodes
+    source.connect(scriptProcessor);
+    scriptProcessor.connect(audioContext.destination);
+}
+
+function denoiseChunks() {
+    // Iterate over all noisy chunks, and break them into chunks of 512 samples for dtln to denoise.
+    let output = new Float32Array(DTLN_FIXED_SAMPLE_SIZE); // Create an output array
+
+    for (let i = 0; i < rawChunks.length; i++) {
+        for (let j = 0; j < rawChunks[i].length; j += DTLN_FIXED_SAMPLE_SIZE) {
+            // Create a new Float32Array with 512 samples
+            let chunk = rawChunks[i].subarray(j, j + DTLN_FIXED_SAMPLE_SIZE);
+
+            // Denoise the chunk
+            DtlnPlugin.dtln_denoise(handle, chunk, output);
+
+            // Store the denoised PCM data
+            denoisedChunks.push(new Float32Array(output));
         }
+    }
+}
 
-        function stopRecording() {
-            if (mediaRecorder) {
-                mediaRecorder.stop();
-                recordButton.disabled = false;
-                stopButton.disabled = true;
-            }
-        }
+function cleanupAudioResources() {
+        scriptProcessor.onaudioprocess = null;
+        scriptProcessor.disconnect();
+        source.disconnect();
+}
 
-        function processAudio(audioBlob) {
-            // invoke imported WASM function here - not sure how it expects bits
-            // const processedAudioBlob = suppressNoise(audioBlob);
-            // processedAudioPlayer.src = URL.createObjectURL(processedAudioBlob);
-            console.log('this is where noise would be removed');
-        }
+async function stopRecording() {
+    if (scriptProcessor && source && audioContext) {
+        cleanupAudioResources();
 
-        recordButton.addEventListener('click', startRecording);
-        stopButton.addEventListener('click',stopRecording);
+        stream.getTracks().forEach(track => track.stop());
+
+        // Create a denoised version of the recorded audio.
+        denoiseChunks();
+
+        // Combine all raw PCM chunks into a single Blob
+        let rawBuffer = mergeFloat32Arrays(rawChunks);
+        let rawBlob = createWavBlob(rawBuffer, audioContext.sampleRate);
+
+        // Combine all denoised PCM chunks into a single Blob
+        let denoisedBuffer = mergeFloat32Arrays(denoisedChunks);
+        let denoisedBlob = createWavBlob(denoisedBuffer, audioContext.sampleRate);
+
+        // Set audio elements to play the blobs
+        let rawAudioURL = URL.createObjectURL(rawBlob);
+        document.getElementById('rawAudio').src = rawAudioURL;
+
+        let denoisedAudioURL = URL.createObjectURL(denoisedBlob);
+        document.getElementById('denoisedAudio').src = denoisedAudioURL;
+        console.log('Recording stopped, set src');
+
+        // Close the audio context
+        audioContext.close();
+
+        // Clear chunks for the next recording
+        rawChunks = [];
+        denoisedChunks = [];
+
+        scriptProcessor = null;
+        source = null;
+        audioContext = null;
+        stream = null;
+    } else {
+        console.error('Recording not started');
+    }
+}
+
+function createWavBlob(buffer, sampleRate) {
+    const numOfChannels = 1;
+    const numOfFrames = buffer.length;
+    const bufferLength = numOfFrames * numOfChannels * 2; // 2 bytes per sample (16-bit PCM)
+    const wavBuffer = new ArrayBuffer(44 + bufferLength);
+    const view = new DataView(wavBuffer);
+
+    // RIFF chunk descriptor
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + bufferLength, true);
+    writeString(view, 8, 'WAVE');
+
+    // FMT sub-chunk
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true); // Sub-chunk size
+    view.setUint16(20, 1, true); // Audio format (1 = PCM)
+    view.setUint16(22, numOfChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * numOfChannels * 2, true); // Byte rate
+    view.setUint16(32, numOfChannels * 2, true); // Block align
+    view.setUint16(34, 16, true); // Bits per sample
+
+    // Data sub-chunk
+    writeString(view, 36, 'data');
+    view.setUint32(40, bufferLength, true);
+
+    // Write PCM samples
+    let offset = 44;
+    for (let i = 0; i < buffer.length; i++) {
+        const sample = Math.max(-1, Math.min(1, buffer[i]));
+        view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+        offset += 2;
+    }
+
+    return new Blob([view], { type: 'audio/wav' });
+}
+
+function writeString(view, offset, string) {
+    for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+    }
+}
+
+function mergeFloat32Arrays(arrays) {
+    // Calculate the total length of all arrays
+    let totalLength = arrays.reduce((sum, array) => sum + array.length, 0);
+    // Create a new Float32Array with the total length
+    let result = new Float32Array(totalLength);
+    // Copy each array into the result
+    let offset = 0;
+    for (let array of arrays) {
+        result.set(array, offset);
+        offset += array.length;
+    }
+    return result;
+}
     </script>
 </body>
 </html>
