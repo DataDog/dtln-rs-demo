@@ -7,10 +7,16 @@
     <title>Real-time Noise Suppression with dtln-rs</title>
 </head>
 <body>
+    <div>
+        <span>Unprocessed Audio</span>
+        <div><audio id="rawAudio" controls></audio></div>
+        <span>Processed Audio</span>
+        <div><audio id="denoisedAudio" controls></audio></div>
+    </div>
     <button id="btnStart" onclick="startRecording()">Start Recording</button>
     <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
-    <audio id="rawAudio" controls></audio>
-    <audio id="denoisedAudio" controls></audio>
+    <button id="btnDenoise" onclick="denoise()">Denoise Audio</button>
+ 
     <script src="./dtln.js?v=7"></script>
     <script>
 
@@ -111,44 +117,40 @@ function cleanupAudioResources() {
         source.disconnect();
 }
 
+async function denoise(){
+    startTime = performance.now();
+    denoiseChunks();
+    stopTime = performance.now();
+    console.log('Denoising took ' + (stopTime - startTime) + ' ms');
+
+    // Combine all denoised PCM chunks into a single Blob
+    let denoisedBuffer = mergeFloat32Arrays(denoisedChunks);
+    let denoisedBlob = createWavBlob(denoisedBuffer, audioContext.sampleRate);
+    let denoisedAudioURL = URL.createObjectURL(denoisedBlob);
+    document.getElementById('denoisedAudio').src = denoisedAudioURL;
+    // Close the audio context
+    audioContext.close();
+
+    // Clear chunks for the next recording
+    rawChunks = [];
+    denoisedChunks = [];
+}
+
 async function stopRecording() {
     if (scriptProcessor && source && audioContext) {
         cleanupAudioResources();
 
         stream.getTracks().forEach(track => track.stop());
-
-        // Create a denoised version of the recorded audio.
-        startTime = performance.now();
-        denoiseChunks();
-        stopTime = performance.now();
-        console.log('Denoising took ' + (stopTime - startTime) + ' ms');
-
         // Combine all raw PCM chunks into a single Blob
         let rawBuffer = mergeFloat32Arrays(rawChunks);
         let rawBlob = createWavBlob(rawBuffer, audioContext.sampleRate);
-
-        // Combine all denoised PCM chunks into a single Blob
-        let denoisedBuffer = mergeFloat32Arrays(denoisedChunks);
-        let denoisedBlob = createWavBlob(denoisedBuffer, audioContext.sampleRate);
 
         // Set audio elements to play the blobs
         let rawAudioURL = URL.createObjectURL(rawBlob);
         document.getElementById('rawAudio').src = rawAudioURL;
 
-        let denoisedAudioURL = URL.createObjectURL(denoisedBlob);
-        document.getElementById('denoisedAudio').src = denoisedAudioURL;
-        console.log('Recording stopped, set src');
-
-        // Close the audio context
-        audioContext.close();
-
-        // Clear chunks for the next recording
-        rawChunks = [];
-        denoisedChunks = [];
-
         scriptProcessor = null;
         source = null;
-        audioContext = null;
         stream = null;
         toggleRecordingButtons();
     } else {
