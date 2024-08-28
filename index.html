@@ -118,7 +118,10 @@ async function stopRecording() {
         stream.getTracks().forEach(track => track.stop());
 
         // Create a denoised version of the recorded audio.
+        startTime = performance.now();
         denoiseChunks();
+        stopTime = performance.now();
+        console.log('Denoising took ' + (stopTime - startTime) + ' ms');
 
         // Combine all raw PCM chunks into a single Blob
         let rawBuffer = mergeFloat32Arrays(rawChunks);
