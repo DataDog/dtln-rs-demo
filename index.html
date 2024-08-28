@@ -48,6 +48,7 @@ async function startRecording() {
     if(!userMediaStream){
         await getAudioStream();
     }
+    // Clone the stream to avoid additional permissions prompts
     stream = userMediaStream.clone();
 
     // Create an AudioContext
