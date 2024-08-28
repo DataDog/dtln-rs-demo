@@ -20,6 +20,7 @@ let rawChunks;
 let denoisedChunks;
 let scriptProcessor;
 let source;
+let userMediaStream;
 let stream;
 
 const DEFAULT_TARGET_SAMPLE_RATE = 16000;
@@ -35,12 +36,19 @@ DtlnPlugin.postRun = [function() {
     handle = DtlnPlugin.dtln_create();
 }];
 
+async function getAudioStream(){
+     // Get audio stream from the user's microphone
+    userMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+}
+
 async function startRecording() {
     rawChunks = [];
     denoisedChunks = [];
 
-    // Get audio stream from the user's microphone
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if(!userMediaStream){
+        await getAudioStream();
+    }
+    stream = userMediaStream.clone();
 
     // Create an AudioContext
     audioContext = new AudioContext({ sampleRate: DEFAULT_TARGET_SAMPLE_RATE });
