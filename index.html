@@ -7,8 +7,8 @@
     <title>Real-time Noise Suppression with dtln-rs</title>
 </head>
 <body>
-    <button onclick="startRecording()">Start Recording</button>
-    <button onclick="stopRecording()">Stop Recording</button>
+    <button id="btnStart" onclick="startRecording()">Start Recording</button>
+    <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
     <audio id="rawAudio" controls></audio>
     <audio id="denoisedAudio" controls></audio>
     <script src="./dtln.js?v=7"></script>
@@ -36,12 +36,19 @@ DtlnPlugin.postRun = [function() {
     handle = DtlnPlugin.dtln_create();
 }];
 
+function toggleRecordingButtons(){
+    document.getElementById('btnStart').disabled = !document.getElementById('btnStart').disabled;
+    document.getElementById('btnStop').disabled = !document.getElementById('btnStop').disabled;
+}
+
 async function getAudioStream(){
      // Get audio stream from the user's microphone
     userMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 }
 
 async function startRecording() {
+    toggleRecordingButtons();
+
     rawChunks = [];
     denoisedChunks = [];
 
@@ -140,6 +147,7 @@ async function stopRecording() {
         source = null;
         audioContext = null;
         stream = null;
+        toggleRecordingButtons();
     } else {
         console.error('Recording not started');
     }
