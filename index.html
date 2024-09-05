@@ -8,6 +8,13 @@
 </head>
 <body>
     <div>
+        <h2>Instructions</h2>
+        <p>Click the "Start Recording" button to start recording audio from your microphone. Click the "Stop Recording" button to stop recording. Click the "Denoise Audio" button to denoise the recorded audio.</p>
+        <p>Alternatively, you can load an audio file by selecting it from the dropdown.</p>
+        <p>The denoised audio will be played back in the "Processed Audio" section.</p>
+        <p>Note: The denoising process may take some time, especially for longer audio recordings.</p>
+    </div>
+    <div>
         <span>Unprocessed Audio</span>
         <div><audio id="rawAudio" controls></audio></div>
         <span>Processed Audio</span>
@@ -16,7 +23,11 @@
     <button id="btnStart" onclick="startRecording()">Start Recording</button>
     <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
     <button id="btnDenoise" onclick="denoise()">Denoise Audio</button>
- 
+    <select id="selectSoundFile" onchange="setAudioSrc()">
+        <option value="">- Select a sound to load</option>
+        <option value="./sounds/lawnmower.mp3">Lawnmower</option>
+    </select>
+
     <script src="./dtln.js?v=7"></script>
     <script>
 
@@ -42,6 +53,10 @@ DtlnPlugin.postRun = [function() {
     handle = DtlnPlugin.dtln_create();
 }];
 
+function setAudioSrc(){
+    document.getElementById('rawAudio').src = document.getElementById('selectSoundFile').value;
+}
+
 function toggleRecordingButtons(){
     document.getElementById('btnStart').disabled = !document.getElementById('btnStart').disabled;
     document.getElementById('btnStop').disabled = !document.getElementById('btnStop').disabled;
@@ -52,26 +67,22 @@ async function getAudioStream(){
     userMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 }
 
-async function startRecording() {
-    toggleRecordingButtons();
-
-    rawChunks = [];
-    denoisedChunks = [];
-
-    if(!userMediaStream){
-        await getAudioStream();
-    }
-    // Clone the stream to avoid additional permissions prompts
-    stream = userMediaStream.clone();
-
+// Get audio stream from an audio element, e.g. for a loaded file rather than recorded
+function getAudioStreamFromElement(){
     // Create an AudioContext
     audioContext = new AudioContext({ sampleRate: DEFAULT_TARGET_SAMPLE_RATE });
+    source = audioContext.createMediaElementSource(document.getElementById('rawAudio'));
+ 
+    processAudio(audioContext);
 
-    // Create a MediaStreamAudioSourceNode from the stream
-    source = audioContext.createMediaStreamSource(stream);
+    //TODO I think this is broken because we are creating the elementSource before wiring up the .onaudioprocess event
+}
+
+function processAudio(context){
+    rawChunks = [];
 
     // Create a ScriptProcessorNode to capture audio data
-    scriptProcessor = audioContext.createScriptProcessor(SCRIPT_PROCESSOR_SAMPLE_SIZE, 1, 1);
+    scriptProcessor = context.createScriptProcessor(SCRIPT_PROCESSOR_SAMPLE_SIZE, 1, 1);
 
     scriptProcessor.onaudioprocess = async function(event) {
         // Get the input buffer
@@ -90,10 +101,30 @@ async function startRecording() {
 
     // Connect the nodes
     source.connect(scriptProcessor);
-    scriptProcessor.connect(audioContext.destination);
+    scriptProcessor.connect(context.destination);
+}
+
+async function startRecording() {
+    toggleRecordingButtons();
+
+    if(!userMediaStream){
+        await getAudioStream();
+    }
+    // Clone the stream to avoid additional permissions prompts
+    stream = userMediaStream.clone();
+
+    // Create an AudioContext
+    audioContext = new AudioContext({ sampleRate: DEFAULT_TARGET_SAMPLE_RATE });
+
+    // Create a MediaStreamAudioSourceNode from the stream
+    source = audioContext.createMediaStreamSource(stream);
+
+    processAudio(audioContext);
 }
 
 function denoiseChunks() {
+    denoisedChunks = [];
+
     // Iterate over all noisy chunks, and break them into chunks of 512 samples for dtln to denoise.
     let output = new Float32Array(DTLN_FIXED_SAMPLE_SIZE); // Create an output array
 
@@ -112,12 +143,16 @@ function denoiseChunks() {
 }
 
 function cleanupAudioResources() {
-        scriptProcessor.onaudioprocess = null;
-        scriptProcessor.disconnect();
-        source.disconnect();
+    scriptProcessor.onaudioprocess = null;
+    scriptProcessor.disconnect();
+    source.disconnect();
 }
 
 async function denoise(){
+    if(!rawChunks){
+        getAudioStreamFromElement();
+    }
+
     startTime = performance.now();
     denoiseChunks();
     stopTime = performance.now();
@@ -130,10 +165,6 @@ async function denoise(){
     document.getElementById('denoisedAudio').src = denoisedAudioURL;
     // Close the audio context
     audioContext.close();
-
-    // Clear chunks for the next recording
-    rawChunks = [];
-    denoisedChunks = [];
 }
 
 async function stopRecording() {
