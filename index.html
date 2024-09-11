@@ -7,15 +7,44 @@
     <title>Real-time Noise Suppression with dtln-rs</title>
 </head>
 <body>
-    <div>
-        <span>Unprocessed Audio</span>
-        <div><audio id="rawAudio" controls></audio></div>
-        <span>Processed Audio</span>
-        <div><audio id="denoisedAudio" controls></audio></div>
+    <div class="audio-container">
+        <div class="audio-section">
+            <span>Unprocessed Audio</span>
+            <div><audio id="rawAudio" controls></audio></div>
+            <br/>
+            <span>Processed Audio</span>
+            <div><audio id="denoisedAudio" controls></audio></div>
+        </div>
     </div>
-    <button id="btnStart" onclick="startRecording()">Start Recording</button>
-    <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
-    <button id="btnDenoise" onclick="denoise()">Denoise Audio</button>
+    <div class="button-container">
+        <button id="btnStart" onclick="startRecording()">Start Recording</button>
+        <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
+        <button id="btnDenoise" onclick="denoise()">Denoise Audio</button>
+    </div>
+
+    <style>
+        .audio-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .audio-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .audio-section span {
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
  
     <script src="dtln.js?v=7"></script>
     <script src="script.js"></script>
