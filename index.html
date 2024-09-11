@@ -7,11 +7,13 @@
     <title>Real-time Noise Suppression with dtln-rs</title>
 </head>
 <body>
+    <button onclick="loadScripts()">Load Demo</button>
     <div class="audio-container">
         <div class="audio-section">
             <span>Unprocessed Audio</span>
             <div><audio id="rawAudio" controls></audio></div>
-            <br/>
+        </div>
+        <div class="audio-section">
             <span>Processed Audio</span>
             <div><audio id="denoisedAudio" controls></audio></div>
         </div>
@@ -21,6 +23,34 @@
         <button id="btnStop" disabled onclick="stopRecording()">Stop Recording</button>
         <button id="btnDenoise" onclick="denoise()">Denoise Audio</button>
     </div>
+
+    <script>
+        function loadScripts() {
+            loadWasmScript();
+            loadScript();
+        }
+
+        //todo make this happen on button press
+        async function loadWasmScript() {
+            const script = document.createElement('script');
+            script.src = 'dtln.js?v=7';
+            script.onload = function() {
+                DtlnPlugin.postRun = [function() {
+                    console.log('dtln-rs loaded');
+                    handle = DtlnPlugin.dtln_create();
+                }];
+            };
+            document.body.appendChild(script);
+        }
+        function loadScript() {
+            const script = document.createElement('script');
+            script.src = 'script.js';
+            script.onload = function() {
+                console.log('script.js loaded');
+            };
+            document.body.appendChild(script);
+        }
+    </script>
 
     <style>
         .audio-container {
@@ -45,8 +75,6 @@
             gap: 10px;
         }
     </style>
- 
-    <script src="dtln.js?v=7"></script>
-    <script src="script.js"></script>
+
 </body>
 </html>

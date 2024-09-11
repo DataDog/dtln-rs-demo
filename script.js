@@ -16,11 +16,6 @@ const SCRIPT_PROCESSOR_SAMPLE_SIZE = 4096;
 // DTLN was trained and tuned to work with this specific sample size.
 const DTLN_FIXED_SAMPLE_SIZE = 512;
 
-DtlnPlugin.postRun = [function() {
-    console.log('dtln-rs loaded');
-    handle = DtlnPlugin.dtln_create();
-}];
-
 function setAudioSrc(){
     document.getElementById('rawAudio').src = document.getElementById('selectSoundFile').value;
 }
