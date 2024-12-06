@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "externalHelpers": true,
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true
+    }
+  },
+  "env": {
+    "targets": ["current node", "chrome 118"]
+  }
+}

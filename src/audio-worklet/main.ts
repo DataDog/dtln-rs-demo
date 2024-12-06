@@ -1,5 +1,3 @@
-import './global-polyfills';
-
 import type { DtlnPluginOpaqueHandle } from 'dtln-rs';
 import dtln from "./dtln.js";
 

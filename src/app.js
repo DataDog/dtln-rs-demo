@@ -1,5 +1,3 @@
-import audioWorkletUrl from './audio-worklet/main?worker&url';
-
 const DEFAULT_TARGET_SAMPLE_RATE = 16000;
 
 let audioStream;
@@ -38,7 +36,7 @@ btnStart.addEventListener('click', async function startRecording() {
 
   if (!suppressionWorkletNode) {
     audioContext.audioWorklet
-      .addModule(audioWorkletUrl)
+      .addModule('/audio-worklet.js')
       .then(() => {
         suppressionWorkletNode = new AudioWorkletNode(
           audioContext,
