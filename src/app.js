@@ -42,7 +42,7 @@ btnStart.addEventListener('click', async function startRecording() {
       .then(() => {
         suppressionWorkletNode = new AudioWorkletNode(
           audioContext,
-          "denoiser"
+          "NoiseSuppressionWorker"
         );
         suppressionWorkletNode.port.onmessage = (event) => {
           // Metrics are received here.
