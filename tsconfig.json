@@ -1,0 +1,10 @@
+{
+  "include": ["src/"],
+  "module": "ES6",
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["DOM", "ES6"],
+    "sourceMap": true,
+    "outDir": "build/"
+  }
+}
