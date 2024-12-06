@@ -46,12 +46,10 @@ btnStart.addEventListener('click', async function startRecording() {
           // Metrics are received here.
           console.log(event.data);
         };
-      });
-  } else if (destination) {
-    source.connect(suppressionWorkletNode).connect(destination);
-  }
 
-  audioStream.getAudioTracks()[0].enabled = true;
+        source.connect(suppressionWorkletNode).connect(destination);
+      });
+  }
 
   btnStart.disabled = true;
   btnStop.disabled = false;
