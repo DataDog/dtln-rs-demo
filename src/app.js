@@ -1,7 +1,8 @@
 const DEFAULT_TARGET_SAMPLE_RATE = 16000;
 
 let audioStream;
-let audioChunks = [];
+let noisyAudioChunks = [];
+let denoisedAudioChunks = [];
 let rawAudio = document.getElementById("rawAudio");
 let denoisedAudio = document.getElementById("denoisedAudio");
 let btnStart = document.getElementById("btnStart");
@@ -11,10 +12,12 @@ let audioContext = null;
 let stream = null;
 let source = null;
 let destination = null;
+let denoisedRecorder = null;
+let noisyRecorder = null;
 
 let suppressionWorkletNode = null;
 
-btnStart.addEventListener('click', async function startRecording() {
+btnStart.addEventListener("click", async function startRecording() {
   // Get audio stream from the user's microphone
   audioStream = await navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -29,41 +32,86 @@ btnStart.addEventListener('click', async function startRecording() {
   // Create a MediaStreamAudioSourceNode from the stream
   source = audioContext.createMediaStreamSource(audioStream);
   destination = audioContext.createMediaStreamDestination();
+  destination.channelCount = 1;
 
-  console.log(
-    "Noise suppression module initialized. Starting worklet."
-  );
+  noisyRecorder = new MediaRecorder(audioStream);
+  noisyRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      noisyAudioChunks.push(event.data);
+    }
+  };
+
+  denoisedRecorder = new MediaRecorder(destination.stream);
+  denoisedRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      denoisedAudioChunks.push(event.data);
+    }
+  };
+
+  noisyRecorder.onstop = () => {
+    rawAudio.src = URL.createObjectURL(
+      new Blob(noisyAudioChunks, { type: "audio/webm" })
+    );
+    noisyAudioChunks = [];
+  };
+
+  denoisedRecorder.onstop = () => {
+    denoisedAudio.src = URL.createObjectURL(
+      new Blob(denoisedAudioChunks, { type: "audio/webm" })
+    );
+    denoisedAudioChunks = [];
+
+    if (source) {
+      source.disconnect();
+    }
+    if (suppressionWorkletNode) {
+      suppressionWorkletNode.disconnect();
+    }
+    if (destination) {
+      destination.disconnect();
+    }
+    if (audioContext) {
+      audioContext.close();
+    }
+
+    audioContext = null;
+    source = null;
+    destination = null;
+    suppressionWorkletNode = null;
+  };
+  console.log("Noise suppression module initialized. Starting worklet.");
 
   if (!suppressionWorkletNode) {
-    audioContext.audioWorklet
-      .addModule('/audio-worklet.js')
-      .then(() => {
-        suppressionWorkletNode = new AudioWorkletNode(
-          audioContext,
-          "NoiseSuppressionWorker"
-        );
-        suppressionWorkletNode.port.onmessage = (event) => {
-          // Metrics are received here.
-          console.log(event.data);
-        };
+    audioContext.audioWorklet.addModule("/audio-worklet.js").then(() => {
+      suppressionWorkletNode = new AudioWorkletNode(
+        audioContext,
+        "NoiseSuppressionWorker"
+      );
+      suppressionWorkletNode.port.onmessage = (event) => {
+        // Metrics are received here.
+        console.log(event.data);
+      };
 
-        source.connect(suppressionWorkletNode).connect(destination);
-      });
+      source.connect(suppressionWorkletNode).connect(destination);
+      denoisedRecorder.start();
+      noisyRecorder.start();
+    });
   }
 
   btnStart.disabled = true;
   btnStop.disabled = false;
-})
+});
 
-btnStop.addEventListener('click', function stopRecording() {
-  audioStream.getTracks().forEach((track) => track.stop());
+btnStop.addEventListener("click", function stopRecording() {
+  if (audioStream) {
+    audioStream.getTracks().forEach((track) => track.stop());
+  }
 
-  denoisedAudio.srcObject = destination.stream;
+  if (denoisedRecorder) {
+    denoisedRecorder.stop();
+    noisyRecorder.stop();
+  }
 
   btnStart.disabled = false;
   btnStop.disabled = true;
-});
-
-btnDenoise.addEventListener('click', async function denoise() {
-  // TODO
 });
