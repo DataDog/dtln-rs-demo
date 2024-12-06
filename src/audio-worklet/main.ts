@@ -1,5 +1,12 @@
-import type { DtlnPluginOpaqueHandle } from "dtln-rs";
-import dtln from "dtln-rs";
+//import type { DtlnPluginOpaqueHandle } from "dtln-rs";
+//import dtln from "dtln-rs";
+
+// TODO: Use real module instead of the stub.
+interface DtlnPluginOpaqueHandle {}
+const dtln = {
+  dtln_create: () => null as DtlnPluginOpaqueHandle,
+  dtln_denoise: (_handle: DtlnPluginOpaqueHandle, _input: Float32Array, _output: Float32Array) => {},
+};
 
 export interface NoiseSuppressionMetrics {
   avg_samples_processed: number;
