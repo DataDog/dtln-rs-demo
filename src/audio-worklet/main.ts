@@ -61,6 +61,9 @@ class NoiseSuppressionWorker extends AudioWorkletProcessor {
 
   constructor() {
     super();
+    dtln.postRun = [() => {
+      this.port.postMessage("ready");
+    }];
   }
   process(
     inputs: Float32Array[][],
@@ -103,6 +106,7 @@ class NoiseSuppressionWorker extends AudioWorkletProcessor {
         this.input_buffer,
         this.output_buffer
       );
+
       this.input_index = 0;
       this.output_bytes = DTLN_FIXED_BUFFER_SIZE;
 
