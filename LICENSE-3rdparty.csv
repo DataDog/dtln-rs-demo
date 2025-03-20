@@ -1,0 +1,229 @@
+Component,Origin,License,Copyright
+@discoveryjs/json-ext,NPM,MIT,Copyright (c) Roman Dvornov
+@jridgewell/gen-mapping,NPM,MIT,Copyright (c) Justin Ridgewell
+@jridgewell/resolve-uri,NPM,MIT,Copyright (c) Justin Ridgewell
+@jridgewell/set-array,NPM,MIT,Copyright (c) Justin Ridgewell
+@jridgewell/source-map,NPM,MIT,Copyright (c) Justin Ridgewell
+@jridgewell/sourcemap-codec,NPM,MIT,Copyright (c) Rich Harris
+@jridgewell/trace-mapping,NPM,MIT,Copyright (c) Justin Ridgewell
+@nodelib/fs.scandir,NPM,MIT,Copyright (c) The @nodelib/fs.scandir Authors
+@nodelib/fs.stat,NPM,MIT,Copyright (c) The @nodelib/fs.stat Authors
+@nodelib/fs.walk,NPM,MIT,Copyright (c) The @nodelib/fs.walk Authors
+@sindresorhus/merge-streams,NPM,MIT,Copyright (c) Sindre Sorhus
+@swc/core,NPM,Apache-2.0,Copyright (c) 강동윤 <kdy1997.dev@gmail.com>
+@swc/core-darwin-arm64,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-darwin-x64,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-linux-arm-gnueabihf,NPM,Apache-2.0,Copyright (c) 강동윤
+@swc/core-linux-arm64-gnu,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-linux-arm64-musl,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-linux-x64-gnu,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-linux-x64-musl,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-win32-arm64-msvc,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-win32-ia32-msvc,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/core-win32-x64-msvc,NPM,Apache-2.0 AND MIT,Copyright (c) 강동윤
+@swc/counter,NPM,Apache-2.0,Copyright (c) 강동윤
+@swc/helpers,NPM,Apache-2.0,Copyright (c) 강동윤
+@swc/types,NPM,Apache-2.0,Copyright (c) 강동윤
+@types/eslint,NPM,MIT,Copyright (c) The @types/eslint Authors
+@types/eslint-scope,NPM,MIT,Copyright (c) The @types/eslint-scope Authors
+@types/estree,NPM,MIT,Copyright (c) The @types/estree Authors
+@types/json-schema,NPM,MIT,Copyright (c) The @types/json-schema Authors
+@types/node,NPM,MIT,Copyright (c) The @types/node Authors
+@webassemblyjs/ast,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/floating-point-hex-parser,NPM,MIT,Copyright (c) Mauro Bringolf
+@webassemblyjs/helper-api-error,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/helper-buffer,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/helper-numbers,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/helper-wasm-bytecode,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/helper-wasm-section,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/ieee754,NPM,MIT,Copyright (c) The @webassemblyjs/ieee754 Authors
+@webassemblyjs/leb128,NPM,Apache-2.0,Copyright (c) The @webassemblyjs/leb128 Authors
+@webassemblyjs/utf8,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/wasm-edit,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/wasm-gen,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/wasm-opt,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/wasm-parser,NPM,MIT,Copyright (c) Sven Sauleau
+@webassemblyjs/wast-printer,NPM,MIT,Copyright (c) Sven Sauleau
+@webpack-cli/configtest,NPM,MIT,Copyright (c) The @webpack-cli/configtest Authors
+@webpack-cli/info,NPM,MIT,Copyright (c) The @webpack-cli/info Authors
+@webpack-cli/serve,NPM,MIT,Copyright (c) The @webpack-cli/serve Authors
+@xtuc/ieee754,NPM,BSD-3-Clause,Copyright (c) Feross Aboukhadijeh
+@xtuc/long,NPM,Apache-2.0,Copyright (c) Daniel Wirtz
+acorn,NPM,MIT,Copyright (c) The acorn Authors
+ajv,NPM,MIT,Copyright (c) Evgeny Poberezkin
+ajv-formats,NPM,MIT,Copyright (c) Evgeny Poberezkin
+ajv-formats/node_modules/ajv,NPM,MIT,Copyright (c) Evgeny Poberezkin
+ajv-formats/node_modules/json-schema-traverse,NPM,MIT,Copyright (c) Evgeny Poberezkin
+ajv-keywords,NPM,MIT,Copyright (c) Evgeny Poberezkin
+ansi-styles,NPM,MIT,Copyright (c) Sindre Sorhus
+async,NPM,MIT,Copyright (c) Caolan McMahon
+asynckit,NPM,MIT,Copyright (c) Alex Indigo
+axios,NPM,MIT,Copyright (c) Matt Zabriskie
+base64-js,NPM,MIT,Copyright (c) T. Jameson Little
+basic-auth,NPM,MIT,Copyright (c) The basic-auth Authors
+braces,NPM,MIT,Copyright (c) Jon Schlinkert
+browserslist,NPM,MIT,Copyright (c) Andrey Sitnik
+buffer,NPM,MIT,Copyright (c) Feross Aboukhadijeh
+buffer-from,NPM,MIT,Copyright (c) The buffer-from Authors
+call-bind,NPM,MIT,Copyright (c) Jordan Harband
+call-bind-apply-helpers,NPM,MIT,Copyright (c) Jordan Harband
+caniuse-lite,NPM,CC-BY-4.0,Copyright (c) Ben Briggs
+chalk,NPM,MIT,Copyright (c) The chalk Authors
+chrome-trace-event,NPM,MIT,Copyright (c) Trent Mick\, Sam Saccone
+clone-deep,NPM,MIT,Copyright (c) Jon Schlinkert
+color-convert,NPM,MIT,Copyright (c) Josh Junon
+color-name,NPM,MIT,Copyright (c) DY
+colorette,NPM,MIT,Copyright (c) Jorge Bucaran
+combined-stream,NPM,MIT,Copyright (c) Felix Geisendörfer
+commander,NPM,MIT,Copyright (c) TJ Holowaychuk
+copy-webpack-plugin,NPM,MIT,Copyright (c) Len Boyette
+copy-webpack-plugin/node_modules/ajv,NPM,MIT,Copyright (c) Evgeny Poberezkin
+copy-webpack-plugin/node_modules/ajv-keywords,NPM,MIT,Copyright (c) Evgeny Poberezkin
+copy-webpack-plugin/node_modules/json-schema-traverse,NPM,MIT,Copyright (c) Evgeny Poberezkin
+copy-webpack-plugin/node_modules/schema-utils,NPM,MIT,Copyright (c) webpack Contrib
+corser,NPM,MIT,Copyright (c) Alexander Grüneberg
+cross-spawn,NPM,MIT,Copyright (c) André Cruz
+debug,NPM,MIT,Copyright (c) Josh Junon
+define-data-property,NPM,MIT,Copyright (c) Jordan Harband
+delayed-stream,NPM,MIT,Copyright (c) Felix Geisendörfer
+dunder-proto,NPM,MIT,Copyright (c) Jordan Harband
+electron-to-chromium,NPM,ISC,Copyright (c) Kilian Valkhof
+enhanced-resolve,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+envinfo,NPM,MIT,Copyright (c) tabrindle@gmail.com
+es-define-property,NPM,MIT,Copyright (c) Jordan Harband
+es-errors,NPM,MIT,Copyright (c) Jordan Harband
+es-module-lexer,NPM,MIT,Copyright (c) Guy Bedford
+es-object-atoms,NPM,MIT,Copyright (c) Jordan Harband
+es-set-tostringtag,NPM,MIT,Copyright (c) Jordan Harband
+escalade,NPM,MIT,Copyright (c) Luke Edwards
+eslint-scope,NPM,BSD-2-Clause,Copyright (c) The eslint-scope Authors
+esrecurse,NPM,BSD-2-Clause,Copyright (c) The esrecurse Authors
+esrecurse/node_modules/estraverse,NPM,BSD-2-Clause,Copyright (c) The esrecurse/node_modules/estraverse Authors
+estraverse,NPM,BSD-2-Clause,Copyright (c) The estraverse Authors
+eventemitter3,NPM,MIT,Copyright (c) Arnout Kazemier
+events,NPM,MIT,Copyright (c) Irakli Gozalishvili
+fast-deep-equal,NPM,MIT,Copyright (c) Evgeny Poberezkin
+fast-glob,NPM,MIT,Copyright (c) Denis Malinochkin
+fast-glob/node_modules/glob-parent,NPM,ISC,Copyright (c) Gulp Team
+fast-json-stable-stringify,NPM,MIT,Copyright (c) James Halliday
+fast-uri,NPM,BSD-3-Clause,Copyright (c) Vincent Le Goff
+fastest-levenshtein,NPM,MIT,Copyright (c) Kasper U. Weihe
+fastq,NPM,ISC,Copyright (c) Matteo Collina
+fill-range,NPM,MIT,Copyright (c) Jon Schlinkert
+find-up,NPM,MIT,Copyright (c) Sindre Sorhus
+flat,NPM,BSD-3-Clause,Copyright (c) Hugh Kennedy
+follow-redirects,NPM,MIT,Copyright (c) Ruben Verborgh
+form-data,NPM,MIT,Copyright (c) Felix Geisendörfer
+function-bind,NPM,MIT,Copyright (c) Raynos
+get-intrinsic,NPM,MIT,Copyright (c) Jordan Harband
+get-proto,NPM,MIT,Copyright (c) Jordan Harband
+glob-parent,NPM,ISC,Copyright (c) Gulp Team
+glob-to-regexp,NPM,BSD-2-Clause,Copyright (c) Nick Fitzgerald
+globby,NPM,MIT,Copyright (c) Sindre Sorhus
+gopd,NPM,MIT,Copyright (c) Jordan Harband
+graceful-fs,NPM,ISC,Copyright (c) The graceful-fs Authors
+has-flag,NPM,MIT,Copyright (c) Sindre Sorhus
+has-property-descriptors,NPM,MIT,Copyright (c) Jordan Harband
+has-symbols,NPM,MIT,Copyright (c) Jordan Harband
+has-tostringtag,NPM,MIT,Copyright (c) Jordan Harband
+hasown,NPM,MIT,Copyright (c) Jordan Harband
+he,NPM,MIT,Copyright (c) Mathias Bynens
+html-encoding-sniffer,NPM,MIT,Copyright (c) Domenic Denicola
+http-proxy,NPM,MIT,Copyright (c) Charlie Robbins
+http-server,NPM,MIT,Copyright (c) The http-server Authors
+iconv-lite,NPM,MIT,Copyright (c) Alexander Shtuchkin
+ieee754,NPM,BSD-3-Clause,Copyright (c) Feross Aboukhadijeh
+ignore,NPM,MIT,Copyright (c) kael
+import-local,NPM,MIT,Copyright (c) Sindre Sorhus
+interpret,NPM,MIT,Copyright (c) Gulp Team
+is-core-module,NPM,MIT,Copyright (c) Jordan Harband
+is-extglob,NPM,MIT,Copyright (c) Jon Schlinkert
+is-glob,NPM,MIT,Copyright (c) Jon Schlinkert
+is-number,NPM,MIT,Copyright (c) Jon Schlinkert
+is-plain-object,NPM,MIT,Copyright (c) Jon Schlinkert
+isexe,NPM,ISC,Copyright (c) Isaac Z. Schlueter
+isobject,NPM,MIT,Copyright (c) Jon Schlinkert
+jest-worker,NPM,MIT,Copyright (c) The jest-worker Authors
+jest-worker/node_modules/supports-color,NPM,MIT,Copyright (c) Sindre Sorhus
+json-parse-even-better-errors,NPM,MIT,Copyright (c) GitHub Inc.
+json-schema-traverse,NPM,MIT,Copyright (c) Evgeny Poberezkin
+kind-of,NPM,MIT,Copyright (c) Jon Schlinkert
+loader-runner,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+locate-path,NPM,MIT,Copyright (c) Sindre Sorhus
+lodash,NPM,MIT,Copyright (c) John-David Dalton
+math-intrinsics,NPM,MIT,Copyright (c) Jordan Harband
+merge-stream,NPM,MIT,Copyright (c) Stephen Sugden
+merge2,NPM,MIT,Copyright (c) The merge2 Authors
+micromatch,NPM,MIT,Copyright (c) Jon Schlinkert
+mime,NPM,MIT,Copyright (c) Robert Kieffer
+mime-db,NPM,MIT,Copyright (c) The mime-db Authors
+mime-types,NPM,MIT,Copyright (c) The mime-types Authors
+minimist,NPM,MIT,Copyright (c) James Halliday
+mkdirp,NPM,MIT,Copyright (c) The mkdirp Authors
+ms,NPM,MIT,Copyright (c) The ms Authors
+neo-async,NPM,MIT,Copyright (c) The neo-async Authors
+node-releases,NPM,MIT,Copyright (c) Sergey Rubanov
+normalize-path,NPM,MIT,Copyright (c) Jon Schlinkert
+object-inspect,NPM,MIT,Copyright (c) James Halliday
+opener,NPM,(WTFPL OR MIT),Copyright (c) Domenic Denicola
+p-limit,NPM,MIT,Copyright (c) Sindre Sorhus
+p-locate,NPM,MIT,Copyright (c) Sindre Sorhus
+p-try,NPM,MIT,Copyright (c) Sindre Sorhus
+path-exists,NPM,MIT,Copyright (c) Sindre Sorhus
+path-key,NPM,MIT,Copyright (c) Sindre Sorhus
+path-parse,NPM,MIT,Copyright (c) Javier Blanco
+path-type,NPM,MIT,Copyright (c) Sindre Sorhus
+picocolors,NPM,ISC,Copyright (c) Alexey Raspopov
+picomatch,NPM,MIT,Copyright (c) Jon Schlinkert
+pkg-dir,NPM,MIT,Copyright (c) Sindre Sorhus
+portfinder,NPM,MIT,Copyright (c) Charlie Robbins
+proxy-from-env,NPM,MIT,Copyright (c) Rob Wu
+punycode,NPM,MIT,Copyright (c) Mathias Bynens
+qs,NPM,BSD-3-Clause,Copyright (c) The qs Authors
+queue-microtask,NPM,MIT,Copyright (c) Feross Aboukhadijeh
+randombytes,NPM,MIT,Copyright (c) The randombytes Authors
+rechoir,NPM,MIT,Copyright (c) Gulp Team
+require-from-string,NPM,MIT,Copyright (c) Vsevolod Strukchinsky
+requires-port,NPM,MIT,Copyright (c) Arnout Kazemier
+resolve,NPM,MIT,Copyright (c) James Halliday
+resolve-cwd,NPM,MIT,Copyright (c) Sindre Sorhus
+resolve-from,NPM,MIT,Copyright (c) Sindre Sorhus
+reusify,NPM,MIT,Copyright (c) Matteo Collina
+run-parallel,NPM,MIT,Copyright (c) Feross Aboukhadijeh
+safe-buffer,NPM,MIT,Copyright (c) Feross Aboukhadijeh
+safer-buffer,NPM,MIT,Copyright (c) Nikita Skovoroda
+schema-utils,NPM,MIT,Copyright (c) webpack Contrib
+secure-compare,NPM,MIT,Copyright (c) Vadim Demedes
+serialize-javascript,NPM,BSD-3-Clause,Copyright (c) Eric Ferraiuolo
+set-function-length,NPM,MIT,Copyright (c) Jordan Harband
+shallow-clone,NPM,MIT,Copyright (c) Jon Schlinkert
+shebang-command,NPM,MIT,Copyright (c) Kevin Mårtensson
+shebang-regex,NPM,MIT,Copyright (c) Sindre Sorhus
+side-channel,NPM,MIT,Copyright (c) Jordan Harband
+slash,NPM,MIT,Copyright (c) Sindre Sorhus
+source-map,NPM,BSD-3-Clause,Copyright (c) Nick Fitzgerald
+source-map-support,NPM,MIT,Copyright (c) The source-map-support Authors
+supports-color,NPM,MIT,Copyright (c) Sindre Sorhus
+supports-preserve-symlinks-flag,NPM,MIT,Copyright (c) Jordan Harband
+swc-loader,NPM,MIT,Copyright (c) 강동윤
+tapable,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+terser,NPM,BSD-2-Clause,Copyright (c) Mihai Bazon
+terser-webpack-plugin,NPM,MIT,Copyright (c) webpack Contrib Team
+to-regex-range,NPM,MIT,Copyright (c) Jon Schlinkert
+tslib,NPM,0BSD,Copyright (c) Microsoft Corp.
+undici-types,NPM,MIT,Copyright (c) The undici-types Authors
+unicorn-magic,NPM,MIT,Copyright (c) Sindre Sorhus
+union,NPM,UNKNOWN,Copyright (c) Charlie Robbins
+update-browserslist-db,NPM,MIT,Copyright (c) Andrey Sitnik
+uri-js,NPM,BSD-2-Clause,Copyright (c) Gary Court
+url-join,NPM,MIT,Copyright (c) José F. Romaniello
+watchpack,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+webpack,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+webpack-cli,NPM,MIT,Copyright (c) The webpack-cli Authors
+webpack-cli/node_modules/commander,NPM,MIT,Copyright (c) TJ Holowaychuk
+webpack-cli/node_modules/webpack-merge,NPM,MIT,Copyright (c) Juho Vepsalainen
+webpack-merge,NPM,MIT,Copyright (c) Juho Vepsalainen
+webpack-sources,NPM,MIT,Copyright (c) Tobias Koppers @sokra
+whatwg-encoding,NPM,MIT,Copyright (c) Domenic Denicola
+which,NPM,ISC,Copyright (c) GitHub Inc.
+wildcard,NPM,MIT,Copyright (c) Damon Oehlman
