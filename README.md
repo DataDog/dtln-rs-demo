@@ -24,3 +24,6 @@ If you would like to contribute, please follow these steps:
 - Make your changes and commit them with clear and concise messages.
 - Push your changes to your fork.
 - Submit a pull request to the main repository.
+
+# sound attribution
+All files in /sounds are [CC0](https://creativecommons.org/publicdomain/zero/1.0/) licensed and available from freesound.org
