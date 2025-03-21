@@ -16,3 +16,11 @@ Build and watch for changes
 
 Serve the project
 > npm run serve
+
+# Contributing
+If you would like to contribute, please follow these steps:
+- Fork the repository.
+- Create a new branch for your feature or bugfix.
+- Make your changes and commit them with clear and concise messages.
+- Push your changes to your fork.
+- Submit a pull request to the main repository.
