@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-time Noise Suppression with dtln-rs</title>
+    <script src="./app.js" defer></script>
+    <style>
+      .audio-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+      }
+
+      .audio-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .audio-section span {
+        margin-bottom: 10px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="audio-container">
+      <div class="audio-section">
+        <span>Unprocessed Audio</span>
+        <div><audio id="rawAudio" controls></audio></div>
+      </div>
+      <div class="audio-section">
+        <span>Processed Audio</span>
+        <div><audio id="denoisedAudio" controls></audio></div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button id="loadClip" disabled>Load Clip</button>
+      <button id="btnStart">Start Recording</button>
+      <button id="btnStop" disabled>Stop Recording</button>
+    </div>
+  </body>
+</html>
