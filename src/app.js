@@ -91,7 +91,7 @@ async function processAudioBufferWithWorklet() {
     recordedAudioBuffer.length,
     recordedAudioBuffer.sampleRate
   );
-  await offlineAudioContext.audioWorklet.addModule("/audio-worklet.js");
+  await offlineAudioContext.audioWorklet.addModule("audio-worklet.js");
   const suppressionWorkletNode = new AudioWorkletNode(
     offlineAudioContext,
     "NoiseSuppressionWorker"
