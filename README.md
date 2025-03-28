@@ -27,3 +27,7 @@ If you would like to contribute, please follow these steps:
 
 # sound attribution
 All files in /sounds are [CC0](https://creativecommons.org/publicdomain/zero/1.0/) licensed and available from freesound.org
+
+# Publishing to github-pages
+To update the hosted demo, build the `dist` artifacts then
+> git subtree push --prefix dist origin gh-pages
