@@ -16,11 +16,35 @@
     "copy-webpack-plugin": "^12.0.2",
     "http-server": "^14.1.1",
     "swc-loader": "^0.2.6",
-    "webpack": "^5.97.1",
+    "webpack": "^5.109.2",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
     "buffer": "^6.0.3"
+  },
+  "overrides": {
+    "webpack": {
+      "schema-utils": {
+        "ajv": "^6.15.0",
+        "ajv-keywords": {
+          "ajv": "^6.15.0"
+        }
+      }
+    },
+    "copy-webpack-plugin": {
+      "fast-glob": {
+        "micromatch": {
+          "picomatch": "^2.3.2"
+        }
+      },
+      "globby": {
+        "fast-glob": {
+          "micromatch": {
+            "picomatch": "^2.3.2"
+          }
+        }
+      }
+    }
   }
 }
